@@ -1,0 +1,23 @@
+[project]
+name = "beamng-earth"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Hideyuki Ezaki", email = "h.ezaki@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "certifi>=2026.10.23",
+    "duckdb>=1.5,<2",
+    "fsspec>=2026.9.0",
+    "numpy>=2.5.4",
+    "pillow>=11",
+]
+
+[project.scripts]
+beamng-earth = "beamng_earth:main"
+
+[build-system]
+requires = ["uv_build>=0.12.13,<0.13.0"]
+build-backend = "uv_build"

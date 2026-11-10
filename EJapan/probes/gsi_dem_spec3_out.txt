@@ -1,0 +1,314 @@
+
+======================================================================
+### /xyz/dem_png
+======================================================================
+ng/{z}/{x}/{y}.png（DEM5B PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5c_png/{z}/{x}/{y}.png（DEM5C PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem_png/{z}/{x}/{y}.png（DEM10B PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5a/{z}/{x}/{y}.txt（DEM5A テキスト形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5b/{z}/{x}/{y}.txt（DEM5B テキスト形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem/{z}/{x}/{y}.txt（DEM10B テキスト形式）
+ データソース
+ 基盤地図情報数値標高モデル を線形的に平滑化することによって得られた値
+ NO IMAGE
+ ズームレベル
+ 1～17（DEM1A）
+ 1～15（DEM5A、DEM5B、DEM5C）
+ 1～14（DEM10B）
+ 提供範囲
+ 標高モデルの更新情報 をご覧ください。
+ 提供開始
+ 平成25年10月30日
+ 備考
+ 標高タイルの作成方法と地理院地図で表示される標高値について （DEM1A、DEM5A、DEM5B、DEM5C、DEM10Bの違いについて）
+ 標高タイルの詳細仕様 
+ ※テキスト形式の標高タイルは令和6年10月より更新を停止しております。
+ 標高タイル（地球地図全球版標高第2版）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/demgm_png/{z}/{x}/{y}.png （PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/demgm/{z}/{x}/{y}.txt （テキスト形式）
+ データソース
+ 地球地図全球版標高第2版 を線形的に平滑化することによって得られた値
+ NO IMAGE
+ ズームレベル
+ 0～8
+ 提供範囲
+ 提供開始
+ 平成28年12月21日
+ 備考
+ 標高タイルの作成方法と地理院地図で表示される標高値について （「データソース：DEMGM」をご参照ください）
+ 標高タイルの詳細仕様 
+ 湖水深タイル
+ URL：https://cyberjapandata.gsi.go.jp/xyz/lakedepth/{z}/{x}/{y}.png
+ データソース
+ 湖沼調査で得られた水深グリッド（DEM）を線形的に平滑化することによって得られた値
+ NO IMAGE
+ ズームレベル
+ 14
+ 提供範囲
+ 湖沼調査を実施した湖沼のうち「湖沼データ」として公開済みの湖沼部（<a href="https:/
+
+======================================================================
+### /xyz/dem5a_png
+======================================================================
+e" id="dem">標高タイル（基盤地図情報数値標高モデル）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem1a_png/{z}/{x}/{y}.png（DEM1A PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5a_png/{z}/{x}/{y}.png（DEM5A PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5b_png/{z}/{x}/{y}.png（DEM5B PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5c_png/{z}/{x}/{y}.png（DEM5C PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem_png/{z}/{x}/{y}.png（DEM10B PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5a/{z}/{x}/{y}.txt（DEM5A テキスト形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5b/{z}/{x}/{y}.txt（DEM5B テキスト形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem/{z}/{x}/{y}.txt（DEM10B テキスト形式）
+ データソース
+ 基盤地図情報数値標高モデル を線形的に平滑化することによって得られた値
+ NO IMAGE
+ ズームレベル
+ 1～17（DEM1A）
+ 1～15（DEM5A、DEM5B、DEM5C）
+ 1～14（DEM10B）
+ 提供範囲
+ 標高モデルの更新情報 をご覧ください。
+ 提供開始
+ 平成25年10月30日
+ 備考
+ 標高タイルの作成方法と地理院地図で表示される標高値について （DEM1A、DEM5A、DEM5B、DEM5C、DEM10Bの違いについて）
+ 標高タイルの詳細仕様 
+ ※テキスト形式の標高タイルは令和6年10月より更新を停止しております。
+ 標高タイル（地球地図全球版標高第2版）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/demgm_png/{z}/{x}/{y}.png （PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/demgm/{z}/{x}/{y}.txt （テキスト形式）
+ データソース
+ 地球地図全球版標高第2版 を線形的に平滑化することによって得られた値
+ NO IMAGE
+ ズームレベル
+ 0～8
+ 提供範囲
+ 提供開始
+ 平成28年12月21日
+ 備考
+ 標高タイルの作成方法と地理院地図で表示される標高値について （「データソース：DEMGM」をご参照ください）
+ 標高タイルの詳細仕様 
+ 湖水深タイル
+ URL：https://cyberjapandata.gsi.go.
+
+======================================================================
+### /xyz/dem5b_png
+======================================================================
+ng/{z}/{x}/{y}.png（DEM1A PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5a_png/{z}/{x}/{y}.png（DEM5A PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5b_png/{z}/{x}/{y}.png（DEM5B PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5c_png/{z}/{x}/{y}.png（DEM5C PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem_png/{z}/{x}/{y}.png（DEM10B PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5a/{z}/{x}/{y}.txt（DEM5A テキスト形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5b/{z}/{x}/{y}.txt（DEM5B テキスト形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem/{z}/{x}/{y}.txt（DEM10B テキスト形式）
+ データソース
+ 基盤地図情報数値標高モデル を線形的に平滑化することによって得られた値
+ NO IMAGE
+ ズームレベル
+ 1～17（DEM1A）
+ 1～15（DEM5A、DEM5B、DEM5C）
+ 1～14（DEM10B）
+ 提供範囲
+ 標高モデルの更新情報 をご覧ください。
+ 提供開始
+ 平成25年10月30日
+ 備考
+ 標高タイルの作成方法と地理院地図で表示される標高値について （DEM1A、DEM5A、DEM5B、DEM5C、DEM10Bの違いについて）
+ 標高タイルの詳細仕様 
+ ※テキスト形式の標高タイルは令和6年10月より更新を停止しております。
+ 標高タイル（地球地図全球版標高第2版）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/demgm_png/{z}/{x}/{y}.png （PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/demgm/{z}/{x}/{y}.txt （テキスト形式）
+ データソース
+ 地球地図全球版標高第2版 を線形的に平滑化することによって得られた値
+ NO IMAGE
+ ズームレベル
+ 0～8
+ 提供範囲
+ 提供開始
+ 平成28年12月21日
+ 備考
+ 標高タイルの作成方法と地理院地図で表示される標高値について （「データソース：DEMGM」をご参照ください）
+ 標高タイルの詳細仕様 
+ 湖水深タイル
+ URL：https://cyberjapandata.gsi.go.jp/xyz/lakedepth/{z}/{x}/{y}.png
+ データソース
+
+======================================================================
+### /xyz/dem5c_png
+======================================================================
+ng/{z}/{x}/{y}.png（DEM5A PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5b_png/{z}/{x}/{y}.png（DEM5B PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5c_png/{z}/{x}/{y}.png（DEM5C PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem_png/{z}/{x}/{y}.png（DEM10B PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5a/{z}/{x}/{y}.txt（DEM5A テキスト形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5b/{z}/{x}/{y}.txt（DEM5B テキスト形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem/{z}/{x}/{y}.txt（DEM10B テキスト形式）
+ データソース
+ 基盤地図情報数値標高モデル を線形的に平滑化することによって得られた値
+ NO IMAGE
+ ズームレベル
+ 1～17（DEM1A）
+ 1～15（DEM5A、DEM5B、DEM5C）
+ 1～14（DEM10B）
+ 提供範囲
+ 標高モデルの更新情報 をご覧ください。
+ 提供開始
+ 平成25年10月30日
+ 備考
+ 標高タイルの作成方法と地理院地図で表示される標高値について （DEM1A、DEM5A、DEM5B、DEM5C、DEM10Bの違いについて）
+ 標高タイルの詳細仕様 
+ ※テキスト形式の標高タイルは令和6年10月より更新を停止しております。
+ 標高タイル（地球地図全球版標高第2版）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/demgm_png/{z}/{x}/{y}.png （PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/demgm/{z}/{x}/{y}.txt （テキスト形式）
+ データソース
+ 地球地図全球版標高第2版 を線形的に平滑化することによって得られた値
+ NO IMAGE
+ ズームレベル
+ 0～8
+ 提供範囲
+ 提供開始
+ 平成28年12月21日
+ 備考
+ 標高タイルの作成方法と地理院地図で表示される標高値について （「データソース：DEMGM」をご参照ください）
+ 標高タイルの詳細仕様 
+ 湖水深タイル
+ URL：https://cyberjapandata.gsi.go.jp/xyz/lakedepth/{z}/{x}/{y}.png
+ データソース
+ 湖沼調査で得られた水深グリッド（DEM）を線形的に平滑化することによって得られた値
+ NO IMAGE
+ <td
+
+======================================================================
+### /xyz/dem1a_png
+======================================================================
+1em; letter-spacing:0.2em; font-weight:bold; font-size:110%; text-indent: 1em;">標高タイル
+ 標高タイル（基盤地図情報数値標高モデル）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem1a_png/{z}/{x}/{y}.png（DEM1A PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5a_png/{z}/{x}/{y}.png（DEM5A PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5b_png/{z}/{x}/{y}.png（DEM5B PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5c_png/{z}/{x}/{y}.png（DEM5C PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem_png/{z}/{x}/{y}.png（DEM10B PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5a/{z}/{x}/{y}.txt（DEM5A テキスト形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5b/{z}/{x}/{y}.txt（DEM5B テキスト形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem/{z}/{x}/{y}.txt（DEM10B テキスト形式）
+ データソース
+ 基盤地図情報数値標高モデル を線形的に平滑化することによって得られた値
+ NO IMAGE
+ ズームレベル
+ 1～17（DEM1A）
+ 1～15（DEM5A、DEM5B、DEM5C）
+ 1～14（DEM10B）
+ 提供範囲
+ 標高モデルの更新情報 をご覧ください。
+ 提供開始
+ 平成25年10月30日
+ 備考
+ 標高タイルの作成方法と地理院地図で表示される標高値について （DEM1A、DEM5A、DEM5B、DEM5C、DEM10Bの違いについて）
+ 標高タイルの詳細仕様 
+ ※テキスト形式の標高タイルは令和6年10月より更新を停止しております。
+ 標高タイル（地球地図全球版標高第2版）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/demgm_png/{z}/{x}/{y}.png （PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/demgm/{z}/{x}/{y}.txt （テキスト形式）
+ データソース
+ 地球地図全球版標高第2版 を線形的に平滑化することによって得られた値
+ NO IMAGE
+ ズームレベル
+ 0～8
+ 提供範囲
+ 提供開始
+ 平成28年12月21日
+ 備考
+ 標高タイルの作成方法と地理院地図で表示される標高値について （「データソース：DEMGM」をご参照ください）
+ 標高タイルの詳細仕様
+
+======================================================================
+### /xyz/demgm_png
+======================================================================
+※テキスト形式の標高タイルは令和6年10月より更新を停止しております。
+ 標高タイル（地球地図全球版標高第2版）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/demgm_png/{z}/{x}/{y}.png （PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/demgm/{z}/{x}/{y}.txt （テキスト形式）
+ データソース
+ 地球地図全球版標高第2版 を線形的に平滑化することによって得られた値
+ NO IMAGE
+ ズームレベル
+ 0～8
+ 提供範囲
+ 提供開始
+ 平成28年12月21日
+ 備考
+ 標高タイルの作成方法と地理院地図で表示される標高値について （「データソース：DEMGM」をご参照ください）
+ 標高タイルの詳細仕様 
+ 湖水深タイル
+ URL：https://cyberjapandata.gsi.go.jp/xyz/lakedepth/{z}/{x}/{y}.png
+ データソース
+ 湖沼調査で得られた水深グリッド（DEM）を線形的に平滑化することによって得られた値
+ NO IMAGE
+ ズームレベル
+ 14
+ 提供範囲
+ 湖沼調査を実施した湖沼のうち「湖沼データ」として公開済みの湖沼部（ 調査実施湖沼一覧 を参照）。
+ 提供開始
+ 令和4年3月22日
+ 備考
+ 湖水深は各湖沼の 基準水面 からの深さになります。また、測量年が古い湖沼もあり、測量当時と比べ現在の湖底地形が変化している場合があります。なお、計算して湖水深の値を求めているため必ずしも湖水深と最大水深点の値が一致するとは限りませんのでご注意ください。
+ 基準水面標高タイル
+ URL：https://cyberjapandata.gsi.go.jp/xyz/lakedepth_standard/{z}/{x}/{y}.png
+ データソース
+ 湖沼調査により得られた値。各湖沼の基準水面の値は 調査実施湖沼一覧 を参照。
+ NO IMAGE
+ ズームレベル
+ 14
+ 提供範囲
+ 湖沼調査を実施した湖沼のうち「湖沼データ」として公開済みの湖沼部（ 調査実施湖沼一覧 を参照）。
+ 提供開始
+ 令和4年3月22日
+ 備考
+ ■ 3. 上記以外のもの
+ 災害
+
+======================================================================
+### /xyz/dem
+======================================================================
+1em; letter-spacing:0.2em; font-weight:bold; font-size:110%; text-indent: 1em;">標高タイル
+ 標高タイル（基盤地図情報数値標高モデル）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem1a_png/{z}/{x}/{y}.png（DEM1A PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5a_png/{z}/{x}/{y}.png（DEM5A PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5b_png/{z}/{x}/{y}.png（DEM5B PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5c_png/{z}/{x}/{y}.png（DEM5C PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem_png/{z}/{x}/{y}.png（DEM10B PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5a/{z}/{x}/{y}.txt（DEM5A テキスト形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem5b/{z}/{x}/{y}.txt（DEM5B テキスト形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/dem/{z}/{x}/{y}.txt（DEM10B テキスト形式）
+ データソース
+ 基盤地図情報数値標高モデル を線形的に平滑化することによって得られた値
+ NO IMAGE
+ ズームレベル
+ 1～17（DEM1A）
+ 1～15（DEM5A、DEM5B、DEM5C）
+ 1～14（DEM10B）
+ 提供範囲
+ 標高モデルの更新情報 をご覧ください。
+ 提供開始
+ 平成25年10月30日
+ 備考
+ 標高タイルの作成方法と地理院地図で表示される標高値について （DEM1A、DEM5A、DEM5B、DEM5C、DEM10Bの違いについて）
+ 標高タイルの詳細仕様 
+ ※テキスト形式の標高タイルは令和6年10月より更新を停止しております。
+ 標高タイル（地球地図全球版標高第2版）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/demgm_png/{z}/{x}/{y}.png （PNG形式）
+ URL：https://cyberjapandata.gsi.go.jp/xyz/demgm/{z}/{x}/{y}.txt （テキスト形式）
+ データソース
+ 地球地図全球版標高第2版 を線形的に平滑化することによって得られた値
+ NO IMAGE
+ ズームレベル
+ 0～8
+ 提供範囲
+ 提供開始
+ 平成28年12月21日
+ 備考
+ 標高タイルの作成方法と地理院地図で表示される標高値について （「データソース：DEMGM」をご参照ください）
+ 標高タイルの詳細仕様
