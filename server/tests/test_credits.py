@@ -63,7 +63,7 @@ class WordingTest(unittest.TestCase):
 
     def test_elevation_and_weather(self):
         self.assertEqual(set(credits.ELEVATION), {demmod.MAPTERHORN["name"], demmod.AWS["name"], polardem.SOURCE,
-                                                  "lidarbc", "hrdem"})
+                                                  "lidarbc", "hrdem", "gsi"})
         # the open government licences' required wording ("Contains information licensed under ...")
         self.assertIn("Open Government Licence - British Columbia", credits.ELEVATION["lidarbc"])
         self.assertIn("Open Government Licence - Canada", credits.ELEVATION["hrdem"])
@@ -100,7 +100,7 @@ class WordingTest(unittest.TestCase):
         """The overlay names every source with the attribution CREDITS.md lists for it (and the
         settings page's line, earthd.ELEVATION_CREDIT, uses): word for word, so the licences'
         required wording is not paraphrased on screen."""
-        text = (Path(__file__).resolve().parents[2] / "CREDITS.md").read_text()
+        text = (Path(__file__).resolve().parents[2] / "CREDITS.md").read_text(encoding="utf-8")
         for i in ("img:usgs", "dem:mapterhorn"):
             kind = "Imagery: " if i.startswith("img:") else "Elevation: "
             self.assertIn(f'"{kind}{credits.full_label(i)}"', text, i)
@@ -633,7 +633,7 @@ class FeatureSourcesTest(unittest.TestCase):
                     self.assertNotIn("model:3dmr", credits.feature_ids(conn))
                 conn.focus = (0.0, -5000.0)
                 self.assertNotIn("model:3dmr", credits.feature_ids(conn))
-        text = (Path(__file__).resolve().parents[2] / "CREDITS.md").read_text()
+        text = (Path(__file__).resolve().parents[2] / "CREDITS.md").read_text(encoding="utf-8")
         self.assertIn(f'"3D models: {credits.full_label("model:3dmr")}"', text)
 
     def test_leaf_off_share_is_no_source(self):

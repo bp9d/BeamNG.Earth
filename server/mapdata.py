@@ -72,6 +72,16 @@ import revisit
 import staging
 import xproc
 
+# PLATEAU building footprints (EJapan/plateau_layer.py): the plugin's own module, on the path when present.
+# The server keeps working without it (_plateau_layer is None: the buildings stay Overture's).
+_EJAPAN = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "EJapan")
+if _EJAPAN not in sys.path:
+    sys.path.insert(0, _EJAPAN)
+try:
+    import plateau_layer as _plateau_layer
+except ImportError:
+    _plateau_layer = None
+
 log = logging.getLogger("earthd.mapdata")
 
 LAYER_THREADS = 12              # layers built at once, every cell and caller of the process (mostly waiting on downloads: 4 were a fresh place's first graded block's ~25 s queue, Ipswich 2026-10-30)
@@ -151,6 +161,7 @@ CREDIT_LINES = {
                       "processed by ESA WorldCover consortium",
     "meta-wri-chm": "Canopy height: Meta & WRI",
     "lidarbc-chm": "Canopy height: LidarBC (OGL-BC), Meta & WRI",
+    "plateau": "Project PLATEAU (MLIT Japan)",
 }
 THEME_OF = {name: spec["theme"] for name, spec in overture.LAYERS.items()}
 
@@ -338,7 +349,8 @@ class MapData:
                 "canopy": maprasters.CHM_RELEASE, "rails": rails.known() if rails is not None else None,
                 "lanes": lanes.known() if lanes is not None else None,
                 "gradesep": (gradesep.VERSION, gradesep.MODE) if gradesep.TUNNELS else None,
-                "osmfuel": OSM_POI_VERSION if OSM_FUEL else False}
+                "osmfuel": OSM_POI_VERSION if OSM_FUEL else False,
+                "plateau": _plateau_layer.VERSION if _plateau_layer is not None else None}
 
     def bundle_versions(self):
         """Offline source identity for prepared road plans, including cached but not yet opened shards.
@@ -396,8 +408,10 @@ class MapData:
     def layer_provenance(self, key, layer):
         """The provenance dict of a cached layer file, None when it is not cached (or has none): only that entry of
         the file is read (np.load is lazy per array), and remembered per file (credits.feature_ids asks every second,
-        from the event loop). Never fetches."""
-        path = self.path(_key(key), layer)
+        from the event loop). Never fetches. A buildings cell with PLATEAU data reports PLATEAU's provenance (the
+        decoded layer replaces the Overture buildings it covers, plateau_layer.py)."""
+        k = _key(key)
+        path = self.path(k, layer)
         memo = self.__dict__.setdefault("_prov_memo", {})
         if path in memo:
             return memo[path]
@@ -410,6 +424,8 @@ class MapData:
             return None                 # (not remembered: it may be built later)
         except Exception:
             p = None
+        if p is not None and layer == "buildings" and _plateau_layer is not None and _plateau_layer.has_data(k):
+            p = _plateau_layer.PROVENANCE
         if len(memo) > 4096:
             memo.clear()
         memo[path] = p
@@ -736,6 +752,10 @@ class MapData:
                 self._lanes(key, layer, f)
                 if layer == "buildings":
                     f = mapgeom.drop_huge(f, BUILDING_MAX_M2)
+                    if _plateau_layer is not None:
+                        f = _plateau_layer.load_and_merge_plateau_buildings(key, f, frame)
+                        if f.__dict__.get("_plateau"):
+                            prov = _plateau_layer.PROVENANCE
                 if layer == "roads":
                     f.__dict__["_bnge_gradesep"] = gradesep.hook(self, key)
                     f.__dict__["_bnge_neighbours"] = gradesep.neighbours_hook(self, key)

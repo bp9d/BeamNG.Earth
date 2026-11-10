@@ -72,6 +72,7 @@ ELEVATION = {
     "lidarbc": "Contains information licensed under the Open Government Licence - British Columbia (LidarBC)",
     "hrdem": "Contains information licensed under the Open Government Licence - Canada "
              "(Natural Resources Canada, HRDEM - CanElevation Series)",
+    "gsi": "Geospatial Information Authority of Japan (GSI)",
     polardem.SOURCE: "Produced using Copernicus WorldDEM-30 (c) DLR e.V. 2010-2014 and (c) Airbus Defence and Space GmbH "
                      "2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
 }
@@ -96,7 +97,7 @@ SHORT = {
     "img:bngs2": "ESA WorldCover Sentinel-2 2021 (Copernicus)",
     f"dem:{demmod.MAPTERHORN['name']}": "Mapterhorn", f"dem:{demmod.AWS['name']}": "AWS Terrain Tiles / Mapzen",
     f"dem:{polardem.SOURCE}": "Copernicus DEM (DLR, Airbus)",
-    "dem:hrdem": "NRCan HRDEM (OGL-Canada)", "dem:lidarbc": "LidarBC (OGL-BC)",
+    "dem:hrdem": "NRCan HRDEM (OGL-Canada)", "dem:lidarbc": "LidarBC (OGL-BC)", "dem:gsi": "GSI Japan",
     WEATHER_ID: "Open-Meteo",
 }
 # Every other source that built what is near the player (the user, 2026-10-18: "show all sources", not only those
@@ -106,6 +107,7 @@ FEATURES = {
     "map:Overture": "Overture Maps", "map:OpenStreetMap": "OpenStreetMap", "map:Microsoft ML Buildings": "Microsoft",
     "map:TomTom": "TomTom", "map:Esri Community Maps": "Esri", "map:Google Open Buildings": "Google",
     "map:USGS Lidar": "USGS Lidar", "map:doi:10.5281/zenodo.8174931": "Shi et al. (East Asia buildings)",
+    "map:plateau": "PLATEAU (MLIT Japan)",
     "land:esa-worldcover": "ESA WorldCover", "canopy:meta-wri-chm": "Meta & WRI",
     "canopy:lidarbc-chm": "LidarBC (OGL-BC)",
     "sea:noaa": "NOAA NCEI", "bridge:nbi": "FHWA NBI", "bridge:wikidata": "Wikidata",
@@ -213,6 +215,8 @@ def feature_ids(conn):
                     if ds:
                         ids.add("map:Overture")
                         ids |= {f"map:{d}" for d in ds if d}
+                elif pid == "plateau":
+                    ids.add("map:plateau")
                 elif pid == "esa-worldcover":
                     ids.add("land:esa-worldcover")
                 elif pid == "meta-wri-chm":
@@ -294,6 +298,8 @@ def tile_sources(frame, bbox, dem, zoom, used):
                 ids.add("dem:hrdem")
             if k in getattr(dem, "lidarbc_served", ()):
                 ids.add("dem:lidarbc")
+            if k in getattr(dem, "gsi_served", ()):
+                ids.add("dem:gsi")
     if callable(getattr(dem, "polar", None)) and polar_covered(frame, bbox, dem.polar()):
         ids.add(f"dem:{polardem.SOURCE}")
     return frozenset(ids)

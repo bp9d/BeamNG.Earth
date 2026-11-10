@@ -292,7 +292,7 @@ def _regional_policies():
     import urllib.parse
     import imagery_regional
     out = {}
-    for url, _attr, _bounds, kind, _leaf in imagery_regional.REGIONAL.values():
+    for url, _attr, _bounds, kind, _leaf, _max_zoom in imagery_regional.REGIONAL.values():
         host = urllib.parse.urlsplit(url).hostname
         if host in POLICIES or host in out:
             continue

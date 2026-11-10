@@ -27,6 +27,7 @@ import json
 import logging
 import math
 import os
+import sys
 import threading
 import time
 from collections import Counter, OrderedDict
@@ -43,6 +44,16 @@ import lidarbc as lidarbcmod
 import netfetch
 import polardem
 import staging
+
+# GSI Japan's elevation tiles (EJapan/gsidem.py): the plugin's own module, on the path when present. The server keeps
+# working without it (gsidemmod is None: the _japan hook is a no-op).
+_EJAPAN = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "EJapan")
+if _EJAPAN not in sys.path:
+    sys.path.insert(0, _EJAPAN)
+try:
+    import gsidem as gsidemmod
+except ImportError:
+    gsidemmod = None
 
 log = logging.getLogger("earthd.dem")
 
@@ -76,9 +87,10 @@ if MIRROR_ZSTD:
 CLAIM_WAIT_S, CLAIM_POLL_S, CLAIM_STALE_S = 0.5, 0.01, 30.0     # (Dem._load_tile: another process making a tile)
 MIRROR_PRUNE_S = 120.0  # the mirror pruned at most this often per process (each prune walks it all)
 MIRROR_MAX_AGE_S = 30 * 86400
-DECODED_VERSION = 4          # 2: tiles past the lidar's depth upsampled from its deepest tile, not z12; its holes
+DECODED_VERSION = 5          # 2: tiles past the lidar's depth upsampled from its deepest tile, not z12; its holes
                              # filled (fill_holes); 3: Canada's HRDEM lidar (hrdem.py) from z13 down; 4: LidarBC,
-                             # and z12 / z13 shifted to its ground (BIAS_*)
+                             # and z12 / z13 shifted to its ground (BIAS_*); 5: GSI Japan's elevation (gsidem.py)
+                             # from z13 down (the mirror's older tiles lack it)
 MAX_ZOOM = 15               # AWS stops at z15 (the far field's zooms: zoom_for's default cap)
 # The near terrain and the road profiles read Mapterhorn's lidar one zoom deeper where it has it (the user, 2026-10-21:
 # "the terrain data gets smoothed ... sharper terrain features get lost": z16 is ~0.8 m a pixel at 48 N, z15 ~1.6 m, the
@@ -90,12 +102,18 @@ HRDEM = os.environ.get("BNE_HRDEM", "1") != "0"
 # ~15 MB a square km of near terrain, and a first visit on Vancouver Island took ~60 s longer to its roads (four
 # fresh towns, 2026-10-28: all 36 road tiles at 85-88 s against 23-26 s). HRDEM (its overviews) stays on.
 LIDARBC = HRDEM and os.environ.get("BNE_LIDARBC", "0") == "1"
+# GSI Japan's elevation tiles (gsidem.py): opt-in by default when the plugin module is present (BNE_GSI=0: as before)
+GSI = gsidemmod is not None and os.environ.get("BNE_GSI", "1") != "0"
 # HRDEM read whole for the near terrain (z15 and deeper, 2 m): opt-in too (2026-10-28, four fresh Vancouver Island
 # towns: all road tiles at 33-53 s against 20-22 s without, 61-72 MB a place). Its coarse overview still lines the
 # far tiles up with the lidar ground (_hrdem_bias: a few MB).
 HRDEM_NEAR = HRDEM and os.environ.get("BNE_HRDEM_NEAR", "0") == "1"
 HRDEM_FEATHER_M = 60.0      # m over which HRDEM's edge blends into Mapterhorn's heights
 HRDEM_FEATHER_MAX_PX = 48
+# GSI Japan's elevation (gsidem.py): the same feathering over its edge, so its DTM blends into Mapterhorn's
+# heights instead of a step (EJ_PLAN §4 "DEM のズーム整合")
+GSI_FEATHER_M = 60.0
+GSI_FEATHER_MAX_PX = 48
 # The distant terrain (z12 / z13: the far field's L2 / L3 rings, 1-4 km out): reading BC's 1 m lidar whole for it would
 # cost ~40 MB a tile, but where Mapterhorn has no lidar its forests stand ~5-18 m above the ground (a quarter of the
 # LidarBC areas sampled, 2026-10-23: Carmanah +15 m), a step against the lidar of the rings inside. So a sparse grid
@@ -255,6 +273,8 @@ class Dem:
         self.lidarbc_sparse = (lidarbcmod.LidarBC(os.path.join(cache_dir, "lidarbc-sparse"), self.fetcher,
                                                   block=BIAS_BLOCK) if LIDARBC else None)
         self.hrdem_served = set()       # tile keys with HRDEM heights in them (the data credits)
+        self.gsidem = gsidemmod.GsiDem(os.path.join(cache_dir, "gsidem"), self.fetcher) if GSI else None
+        self.gsi_served = set()         # tile keys with GSI Japan heights in them (the data credits)
 
 
     def clear_memory(self):
@@ -269,6 +289,40 @@ class Dem:
         if z < FINE_MIN_ZOOM:
             return self._bc_bias(key, self._hrdem_bias(key, a))
         return self._canada_fine(key, a)
+
+    def _japan(self, key, a):
+        """Tile key's heights a with GSI Japan's elevation (gsidem.py) put in where it has data (z13 and deeper),
+        feathered over its edge so the DTM blends into Mapterhorn's heights instead of a step."""
+        z, x, y = key
+        g = self.gsidem
+        if g is None or a is None or z < gsidemmod.MIN_ZOOM:
+            return a
+        if not gsidemmod.covers(z, x, y):
+            return a
+        try:
+            got = g.tile(z, x, y)
+        except (netfetch.FetchError, OSError, ValueError) as e:
+            self._count("gsidem:error")
+            self._partial()
+            log.debug("gsidem %s: %s", key, e)
+            return a
+        if got is None:
+            return a
+        h, ok = got
+        sea = a == 0.0                      # Mapterhorn's sea reads exactly 0: it stays the sea
+        ok = ok & ~sea
+        if not ok.any():
+            return a
+        n = 2 ** z
+        lat = math.degrees(math.atan(math.sinh(math.pi * (1 - 2 * (y + 0.5) / n))))
+        px = 40075016.686 * math.cos(math.radians(lat)) / n / TILE
+        w = hrdemmod.feather(ok, min(GSI_FEATHER_MAX_PX, max(2, round(GSI_FEATHER_M / px))))
+        out = (a * (1.0 - w) + h * w).astype(np.float32)
+        out[sea] = 0.0                      # the sea stays the sea
+        self._count("gsidem:tile")
+        with self._lock:
+            self.gsi_served.add(key)
+        return out
 
     def _hrdem_bias(self, key, a):
         """Distant tile key's heights a shifted to HRDEM's ground (read from a coarse overview) where Mapterhorn's sit
@@ -806,7 +860,7 @@ class Dem:
         return None
 
     def _make_tile(self, key):
-        return self._canada(key, self._make_tile0(key))
+        return self._japan(key, self._canada(key, self._make_tile0(key)))
 
     def _make_tile0(self, key):
         z, x, y = key

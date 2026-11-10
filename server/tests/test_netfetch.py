@@ -961,8 +961,9 @@ class OfflineTest(unittest.TestCase):
         c.refresh_status()                                              # the note changed: re-sent
         self.assertEqual(c.writer.msgs[-1]["text"],
                          f"Ready | Degraded: {EOX} unreachable ({nf.ROLES[EOX]})")     # (what it affects)
-        for h in (USGS, MT, "s3.amazonaws.com"):
-            f.host(h).breaker.trip(60.0)
+        for h in (USGS, MT, "s3.amazonaws.com", demmod.gsidemmod.HOST if demmod.gsidemmod else None):
+            if h:
+                f.host(h).breaker.trip(60.0)
         self.assertTrue(f.offline)
         c.refresh_status()
         self.assertEqual(c.writer.msgs[-1]["text"], "Ready | Offline - using cached data")
