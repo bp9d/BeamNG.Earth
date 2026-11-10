@@ -2,6 +2,14 @@
 
 What changed in each release of BeamNG.Earth, newest first.
 
+## Unreleased (Japan provider)
+
+### Fixed
+- **Roads sunk at bridges, overpasses and tunnel mouths in Japan**: the road height plans cached under the previous
+  elevation model were reused after GSI's elevation was switched on, so the roads no longer met the new terrain. The
+  plans' cache key now carries the elevation model's identity, so they are planned again when it changes. GSI's own
+  tiles are also kept in the download cache instead of being downloaded again on every visit.
+
 ## 1.9.1 beta (2026-11-09)
 
 > **Join the TGForever Discord, [discord.gg/tgf](https://discord.gg/tgf), to chat, get help, report bugs or help

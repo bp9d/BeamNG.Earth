@@ -84,6 +84,18 @@ except ImportError:
 
 log = logging.getLogger("earthd.mapdata")
 
+
+def _dem_source_key():
+    """dem.source_key() without importing the heavy module at load time (the workers import mapdata first). It names
+    the elevation model the road plans and terrain are graded from: a change there (a regional DEM added, its decode
+    fixed) must reach the plans' cache keys, and versions() is part of them (plancache's persisted copy)."""
+    try:
+        import dem as demmod
+        return demmod.source_key()
+    except Exception:               # (no DEM in a thin harness: as before)
+        return None
+
+
 LAYER_THREADS = 12              # layers built at once, every cell and caller of the process (mostly waiting on downloads: 4 were a fresh place's first graded block's ~25 s queue, Ipswich 2026-10-30)
 OSM_THREADS = 8                 # cells whose OpenStreetMap tags are read at once (alongside their Overture roads)
 OSM_FUEL = os.environ.get("BNGE_OSM_FUEL", "1") != "0"     # OpenStreetMap's fuel stations per cell (osmfuel.py; the
@@ -350,7 +362,11 @@ class MapData:
                 "lanes": lanes.known() if lanes is not None else None,
                 "gradesep": (gradesep.VERSION, gradesep.MODE) if gradesep.TUNNELS else None,
                 "osmfuel": OSM_POI_VERSION if OSM_FUEL else False,
-                "plateau": _plateau_layer.VERSION if _plateau_layer is not None else None}
+                "plateau": _plateau_layer.VERSION if _plateau_layer is not None else None,
+                # (the elevation model the plans and terrain come from: GSI Japan's DTM replaces Mapterhorn's surface
+                # model by default, which changes every road's height; without this, a place's plans cached before it
+                # are read back and the roads sit off the new terrain, sunk at bridges and tunnel mouths, 2026-11-11)
+                "elevation": _dem_source_key()}
 
     def bundle_versions(self):
         """Offline source identity for prepared road plans, including cached but not yet opened shards.

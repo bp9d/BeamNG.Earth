@@ -114,6 +114,17 @@ HRDEM_FEATHER_MAX_PX = 48
 # heights instead of a step (EJ_PLAN §4 "DEM のズーム整合")
 GSI_FEATHER_M = 60.0
 GSI_FEATHER_MAX_PX = 48
+
+
+def source_key():
+    """Identity of the elevation model the plans and tiles are graded from (mapdata.versions()): the decoder's version
+    and the regional providers in use. A change here (GSI Japan added, a regional DEM's decode fixed) makes other
+    plans, so it must change their cache keys: a default-on provider is no BNE_* switch, which is all revisit's
+    switches_key sees, and the plans are keyed by their format, not by the code (plancache.PLANS_FORMAT)."""
+    g = getattr(gsidemmod, "VERSION", 0) if GSI else 0
+    return f"v{DECODED_VERSION}-g{int(bool(GSI))}.{g}-h{int(bool(HRDEM))}-b{int(bool(LIDARBC))}"
+
+
 # The distant terrain (z12 / z13: the far field's L2 / L3 rings, 1-4 km out): reading BC's 1 m lidar whole for it would
 # cost ~40 MB a tile, but where Mapterhorn has no lidar its forests stand ~5-18 m above the ground (a quarter of the
 # LidarBC areas sampled, 2026-10-23: Carmanah +15 m), a step against the lidar of the rings inside. So a sparse grid

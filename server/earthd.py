@@ -1205,7 +1205,9 @@ class Server:
         self.make_fast_pool = None      # n -> such a pool (main_async: the road pool's initializer), or None
         self._fast_lock = threading.Lock()
         if cache is not None:
-            for producer in (self.dem, self.imagery, self.deshadow, self.colormatch):
+            producers = (self.dem, self.imagery, self.deshadow, self.colormatch,
+                         getattr(self.dem, "gsidem", None) if self.dem is not None else None)
+            for producer in producers:
                 if producer is not None:
                     producer.disk = cache
 

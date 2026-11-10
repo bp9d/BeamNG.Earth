@@ -41,6 +41,9 @@ TILE = 512                      # dem.py's tile size
 MIN_ZOOM = 13                   # coarser tiles (far terrain) keep Mapterhorn
 MAX_ZOOM = 15                   # dem5a_png's finest zoom; z16 is its z15 parent upsampled
 NODATA = 1 << 23                # x == 2^23: no data ((R, G, B) = (128, 0, 0))
+# Bump when the decode/resampling changes heights: dem.source_key() carries it into the plans' cache keys
+# (mapdata.versions), so cached roads and terrain are graded again (a decode fix alone would not).
+VERSION = 1
 
 
 def tile_bounds(z, x, y):
