@@ -881,6 +881,16 @@ class OverTunnels(unittest.TestCase):
         np.testing.assert_array_equal(got, [True, True, False, False, False, True, False])
         self.assertIsNone(grading.Grader._over_tunnels(g, np.array([50.0]), np.array([30.0])))
 
+    def test_on_plans_takes_plan_objects(self):
+        """apply() passes the plans themselves (not (fid, Plan) pairs): a tunnel's plan is left out of the grading on
+        another road's core (the far tiles' TypeError, 2026-11-11)."""
+        import threading
+        import types
+        p = grading.Plan(np.array([[0.0, 0.0], [100.0, 0.0]]), np.array([0.0, 0.0]), 5.0)
+        g = types.SimpleNamespace(lock=threading.Lock())
+        got = grading._Planner._on_plans(g, np.array([50.0, 500.0]), np.array([0.0, 0.0]), [p])
+        np.testing.assert_array_equal(got, [True, False])
+
 
 class WallHeightTest(unittest.TestCase):
     def test_city_concrete_walls_full_height(self):

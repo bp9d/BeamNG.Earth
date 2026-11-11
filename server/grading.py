@@ -564,7 +564,8 @@ def raceway_ground(e, n, base, zones, margin=None):
 class Plan:
     """One road's grading: vertices (n, 2) in the frame's ENU metres, their target heights, core half width; abut: does
     it lead onto a bridge at its (first, last) vertex (grade_points)."""
-    __slots__ = ("xy", "z", "half", "bbox", "abut", "cut", "road_half", "rid", "max_wall", "bank", "steep", "widen")
+    __slots__ = ("xy", "z", "half", "bbox", "abut", "cut", "road_half", "rid", "max_wall", "bank", "steep", "widen",
+                 "tunnel")
 
     def __init__(self, xy, z, half, abut=(False, False), cut=None, road_half=None):
         self.xy, self.z, self.half, self.abut = xy, z, float(half), (bool(abut[0]), bool(abut[1]))
@@ -577,6 +578,7 @@ class Plan:
         self.bank = None                # (n,) its cross slope (m per m toward its left: a banked curve, bank) or None
         self.steep = False              # a mountain pass road's: steep sides (STEEP_RUN, roads._mountain_roads)
         self.widen = None               # (n,) m its core and carriageway are wider each side there (hairpin_cores) or None
+        self.tunnel = False             # a tunnel's own plan (open section, mouth): grades its road only (apply)
         pad = half + T_MAX
         self.bbox = (xy[:, 0].min() - pad, xy[:, 1].min() - pad, xy[:, 0].max() + pad, xy[:, 1].max() + pad)
 
@@ -4253,6 +4255,7 @@ class _Planner:
             for fid_part, p in self._cell_plans(key):
                 if roads_only and TUNNEL_TAG in fid_part:
                     continue
+                p.tunnel = TUNNEL_TAG in fid_part      # (apply: a tunnel's plan grades its own road only)
                 got.setdefault((fid_part, float(p.xy[0, 0]), float(p.xy[0, 1])), p)
         # in the order of their keys: grade_points' sums run in plan order, so every caller (the block, a road
         # tile, a far tile) gets the same heights at a point whatever other cells its points reached
@@ -4299,6 +4302,18 @@ class _Planner:
         e, n, _ = self.frame.geodetic_to_enu(lat.ravel(), lon.ravel(), 0.0)
         e, n = np.asarray(e), np.asarray(n)
         out = grade_points(e, n, base.ravel(), pack, lift) if plans else np.array(base.ravel(), np.float64, copy=True)
+        if not roads_only and any(getattr(p, "tunnel", False) for p in plans):
+            # The tunnels' own plans (their open sections and mouths) grade their road only: a road above or beside
+            # a tunnel (an overpass over its open approach) must not be pulled to the tunnel's floor. With GSI's
+            # bare-earth DTM the portal ground is the hill over the tube, so the tunnel's plan sat high and dragged
+            # the overpass above it (the user, 2026-11-11: "the overpass before the tunnel is affected by the tunnel
+            # below"). Points on another road keep the grading without the tunnels' plans.
+            plans_r, pack_r = self._plan_set(keys, True)
+            out_r = (grade_points(e, n, base.ravel(), pack_r, lift) if plans_r
+                     else np.array(base.ravel(), np.float64, copy=True))
+            other = self._on_plans(e, n, [p for p in plans if not getattr(p, "tunnel", False)])
+            if other is not None:
+                out = np.where(other, out_r, out)
         race = self._on_kept(e, n)
         if race is not None:                # (the terrain is a racetrack's surface: GitHub #143, smoothed: #833)
             out[race] = self._raceway_ground(e[race], n[race], base.ravel()[race])
@@ -4362,6 +4377,23 @@ class _Planner:
             if got:
                 zones.append(got)
         return raceway_ground(e, n, base, zones)
+
+    def _on_plans(self, e, n, plans):
+        """Which points lie on a road's core (+ its transition, T_MAX), or None. The tunnels' plans are left out of
+        the grading there: a road above a tunnel keeps its own profile (apply)."""
+        if not plans or not len(e):
+            return None
+        import fast
+        fast.require(0, "over_tunnel")
+        mask = np.zeros(len(e), bool)
+        ee, nn = np.ascontiguousarray(e, np.float64), np.ascontiguousarray(n, np.float64)
+        for p in plans:
+            xy = np.asarray(p.xy, np.float64)
+            if len(xy) < 2:
+                continue
+            fast._ef.over_tunnel(mask, ee, nn, np.ascontiguousarray(xy[:, :2], np.float64),
+                                 float(p.half) + T_MAX, 0.0)
+        return mask if mask.any() else None
 
     def _on_kept(self, e, n):
         """Which points lie on an UNGRADED road's carriageway (+ UNGRADED_MARGIN_M), or None."""

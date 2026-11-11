@@ -1,5 +1,8 @@
 """Grade separations solved as one height problem (GitHub proposal "solve overpasses and interchanges as one height
-problem", stage 1: a single-span bridge over the roads crossing under it). Off by default: BNE_INTERCHANGE=1.
+problem", stage 1: a single-span bridge over the roads crossing under it). Off by default; the server turns it on where
+GSI's bare-earth DTM is used (enable_for_dem): that elevation no longer carries a bridge's deck, so the rules that read
+it alone left the roads over and under a structure at the wrong heights (the user, 2026-11-11: a steep ramp at a
+tunnel's mouth and an overpass dragged by the tunnel below it). BNE_INTERCHANGE=1 forces it on, =0 off.
 
 Today each rule moves one road: the road under a never-raised overpass dips (grading._lower_underpasses, #126), the
 roads onto a raisable one rise (_lift_approaches, never a motorway's or trunk's: APPROACH_SKIP), and #504 keeps a road
@@ -27,6 +30,22 @@ import os
 import numpy as np
 
 ON = os.environ.get("BNE_INTERCHANGE", "0").lower() in ("1", "on", "yes", "true")
+
+
+def enable_for_dem(dem):
+    """Turn the interchange solver on where the elevation is GSI's bare-earth DTM (dem.GSI): it no longer carries a
+    bridge's deck, so the rules that read the elevation alone left the roads over and under a structure at the wrong
+    heights. BNE_INTERCHANGE=0 still turns it off; =1 turns it on everywhere (the default here is off, so the tests
+    of the older rules keep their behaviour)."""
+    if os.environ.get("BNE_INTERCHANGE", "").lower() in ("0", "off", "no", "false"):
+        return
+    if not getattr(dem, "GSI", False):
+        return
+    global ON
+    ON = True
+    import grading
+    grading.CW_ON = True
+    grading.XS_ON = True
 
 UNDER_GAP_M = 20.0      # m past the bridge's half width (its embankment's foot) the road under is first read ...
 UNDER_RUN_M = 60.0      # ... and over this much further, on each side (lidar's fill under Wezep's A28 deck ran

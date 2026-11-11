@@ -58,6 +58,8 @@ class _State:
         self.imagery = None         # (its settings, imagery.Imagery from the disk alone): far_tile's textures
         net = netfetch.Fetcher(offline=offline)
         self.dem = demmod.Dem(os.path.join(cache_dir, "dem"), fetcher=net)
+        import crossings as _crossings
+        _crossings.enable_for_dem(self.dem)     # (GSI's bare-earth DTM: the interchange solver, crossings.py)
         import railways as _railways    # (coarse elevation: rail decks raised over the roads under them)
         _railways.COARSE_AT = self.dem.coarse_at
         # (and no separation in the ground under a rail bridge: railways.flat_rail_crossing)

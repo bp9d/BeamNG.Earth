@@ -9,6 +9,10 @@ What changed in each release of BeamNG.Earth, newest first.
   elevation model were reused after GSI's elevation was switched on, so the roads no longer met the new terrain. The
   plans' cache key now carries the elevation model's identity, so they are planned again when it changes. GSI's own
   tiles are also kept in the download cache instead of being downloaded again on every visit.
+- **Steep ramps at tunnel mouths and overpasses in Japan**: GSI's bare-earth elevation no longer carries a bridge's
+  deck, so the rules that read the elevation alone left the roads over and under a structure at the wrong heights.
+  The interchange solver (crossings.py / carriageways.py) is now turned on where GSI is used, capping grades and
+  solving a bridge and the roads under it together. A tunnel's own plan also no longer grades the road above it.
 
 ## 1.9.1 beta (2026-11-09)
 

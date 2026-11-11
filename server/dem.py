@@ -285,6 +285,7 @@ class Dem:
                                                   block=BIAS_BLOCK) if LIDARBC else None)
         self.hrdem_served = set()       # tile keys with HRDEM heights in them (the data credits)
         self.gsidem = gsidemmod.GsiDem(os.path.join(cache_dir, "gsidem"), self.fetcher) if GSI else None
+        self.GSI = GSI                  # (crossings.enable_for_dem: the interchange solver where the DTM is used)
         self.gsi_served = set()         # tile keys with GSI Japan heights in them (the data credits)
 
 

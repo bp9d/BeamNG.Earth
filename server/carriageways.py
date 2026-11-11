@@ -1,7 +1,8 @@
-"""Motorway and trunk carriageways as one height problem (BNE_INTERCHANGE with BNE_CARRIAGEWAYS=on; the interchange
-proposal's stage 2/3; the user, 2026-11-01: "first establish base dem, and minimum clearances, and then we produce smooth
-roads that connect those dots, in a way that doesn't break our rules ... stay close to the DEM, but if the dem requires
-us to make an unrealistic road, something needs to give").
+"""Motorway and trunk carriageways as one height problem (with crossings.ON, which the server turns on where GSI's
+bare-earth DTM is used; BNE_INTERCHANGE=0 or BNE_CARRIAGEWAYS=off turns it off; the interchange proposal's stage 2/3;
+the user, 2026-11-01: "first establish base dem, and minimum clearances, and then we produce smooth roads that connect
+those dots, in a way that doesn't break our rules ... stay close to the DEM, but if the dem requires us to make an
+unrealistic road, something needs to give").
 
 Grading planned each road from the elevation up to the mapped end of its bridge, and roads.BridgeProfiles laid each deck
 from the ground at its ends and lifted it over what it crosses: two answers that often did not meet. Mapped ends sit on

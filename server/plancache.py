@@ -90,7 +90,9 @@ def for_grader(cache_dir, grader, widths, wet):
     cache too (persist): a place's next visit (a game started where it was left, or anchored anywhere near) reads them
     instead of planning again."""
     md = getattr(grader, "md", None)
-    signature = f"w{int(widths is not None)}s{int(wet is not None)}"
+    import crossings
+    # (x: the interchange solver's state: it changes the plans, and they are keyed by their format, not the code)
+    signature = f"w{int(widths is not None)}s{int(wet is not None)}x{int(crossings.ON)}"
     bundle = os.environ.get("BNGE_WORLD_BUNDLE")
     if bundle:
         from worldbundle import PinnedPlanCache
